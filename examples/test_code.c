@@ -97,4 +97,14 @@ run_tests() {
     RUN_TEST(INT_IS_EQUAL(hgps.minutes, 37));
     RUN_TEST(INT_IS_EQUAL(hgps.seconds, 30));
 #endif /* GPS_CFG_STATEMENT_PUBX_TIME */
+
+#if GPS_CFG_COUNT_PARSED
+    RUN_TEST(INT_IS_EQUAL(hgps.parsed_RMC, 1));
+    RUN_TEST(INT_IS_EQUAL(hgps.parsed_GGA, 1));
+    RUN_TEST(INT_IS_EQUAL(hgps.parsed_GSA, 1));
+    RUN_TEST(INT_IS_EQUAL(hgps.parsed_GSV, 2));
+#if GPS_CFG_STATEMENT_PUBX_TIME
+    RUN_TEST(INT_IS_EQUAL(hgps.parsed_PUBX_TIME, 2));
+#endif /* GPS_CFG_STATEMENT_PUBX_TIME */
+#endif /* GPS_CFG_COUNT_PARSED */
 }

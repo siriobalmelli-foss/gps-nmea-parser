@@ -17,6 +17,7 @@ test: $(TARGETS)
 CFLAGS += -Wall \
 	  -DGPS_CFG_STATEMENT_PUBX=1 \
 	  -DGPS_CFG_STATEMENT_PUBX_TIME=1 \
+	  -DGPS_CFG_COUNT_PARSED=1 \
 	  -DDEBUG=1 \
 	-I../gps_nmea_parser/src/include
 

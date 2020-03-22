@@ -59,6 +59,16 @@ extern "C" {
 #endif
 
 /**
+ * \brief           Enables `1` or disables `0` counting
+ *                  of number of statements successfully parsed.
+ *
+ * \note            Disabled by default as this takes up some memory.
+ */
+#ifndef GPS_CFG_COUNT_PARSED
+#define GPS_CFG_COUNT_PARSED                0
+#endif
+
+/**
  * \brief           Enables `1` or disables `0` `GGA` statement parsing.
  *
  * \note            This statement must be enabled to parse:
@@ -180,6 +190,9 @@ typedef struct {
  * \brief           GPS main structure
  */
 typedef struct {
+#if GPS_CFG_COUNT_PARSED || __DOXYGEN__
+    uint32_t parsed;                            /*!< Total statements successfully parsed. */
+#endif /* GPS_CFG_COUNT_PARSED || __DOXYGEN__ */
 #if GPS_CFG_STATEMENT_GPGGA || __DOXYGEN__
     /* Information related to GPGGA statement */
     gps_float_t latitude;                       /*!< Latitude in units of degrees */
@@ -191,6 +204,9 @@ typedef struct {
     uint8_t hours;                              /*!< Hours in UTC */
     uint8_t minutes;                            /*!< Minutes in UTC */
     uint8_t seconds;                            /*!< Seconds in UTC */
+#if GPS_CFG_COUNT_PARSED || __DOXYGEN__
+    uint32_t parsed_GGA;                        /*!< GGA statements successfully parsed. */
+#endif /* GPS_CFG_COUNT_PARSED || __DOXYGEN__ */
 #endif /* GPS_CFG_STATEMENT_GPGGA || __DOXYGEN__ */
 
 #if GPS_CFG_STATEMENT_GPGSA || __DOXYGEN__
@@ -200,6 +216,9 @@ typedef struct {
     gps_float_t dop_p;                          /*!< Dolution of precision, position */
     uint8_t fix_mode;                           /*!< Fix mode. `1` = NO fix, `2` = 2D fix, `3` = 3D fix */
     uint8_t satellites_ids[12];                 /*!< List of satellite IDs in use. Valid range is `0` to `sats_in_use` */
+#if GPS_CFG_COUNT_PARSED || __DOXYGEN__
+    uint32_t parsed_GSA;                        /*!< GSA statements successfully parsed. */
+#endif /* GPS_CFG_COUNT_PARSED || __DOXYGEN__ */
 #endif /* GPS_CFG_STATEMENT_GPGSA || __DOXYGEN__ */
 
 #if GPS_CFG_STATEMENT_GPGSV || __DOXYGEN__
@@ -208,6 +227,9 @@ typedef struct {
 #if GPS_CFG_STATEMENT_GPGSV_SAT_DET || __DOXYGEN__
     gps_sat_t sats_in_view_desc[12];
 #endif
+#if GPS_CFG_COUNT_PARSED || __DOXYGEN__
+    uint32_t parsed_GSV;                        /*!< GSV statements successfully parsed. */
+#endif /* GPS_CFG_COUNT_PARSED || __DOXYGEN__ */
 #endif /* GPS_CFG_STATEMENT_GPGSV || __DOXYGEN__ */
 
 #if GPS_CFG_STATEMENT_GPRMC || __DOXYGEN__
@@ -219,6 +241,9 @@ typedef struct {
     uint8_t date;                               /*!< Fix date */
     uint8_t month;                              /*!< Fix month */
     uint8_t year;                               /*!< Fix year */
+#if GPS_CFG_COUNT_PARSED || __DOXYGEN__
+    uint32_t parsed_RMC;                        /*!< RMC statements successfully parsed. */
+#endif /* GPS_CFG_COUNT_PARSED || __DOXYGEN__ */
 #endif /* GPS_CFG_STATEMENT_GPRMC || __DOXYGEN__ */
 
 #if GPS_CFG_STATEMENT_PUBX_TIME || __DOXYGEN__
@@ -241,6 +266,9 @@ typedef struct {
     uint32_t clk_bias;                          /*!< Receiver clock bias, eg 1930035 */
     gps_float_t clk_drift;                      /*!< Receiver clock drift, eg -2660.664 */
     uint32_t tp_gran;                           /*!< Time pulse granularity, eg 43 */
+#if GPS_CFG_COUNT_PARSED || __DOXYGEN__
+    uint32_t parsed_PUBX_TIME;                  /*!< PUBX_TIME statements successfully parsed. */
+#endif /* GPS_CFG_COUNT_PARSED || __DOXYGEN__ */
 #endif /* GPS_CFG_STATEMENT_PUBX_TIME || __DOXYGEN__ */
 
 #if !__DOXYGEN__

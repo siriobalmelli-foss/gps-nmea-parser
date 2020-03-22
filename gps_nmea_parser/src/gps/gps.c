@@ -385,6 +385,9 @@ copy_from_tmp_memory(gps_t* gh) {
         gh->hours = gh->p.data.gga.hours;
         gh->minutes = gh->p.data.gga.minutes;
         gh->seconds = gh->p.data.gga.seconds;
+#if GPS_CFG_COUNT_PARSED
+        gh->parsed_GGA++;
+#endif /* GPS_CFG_COUNT_PARSED */
 #endif /* GPS_CFG_STATEMENT_GPGGA */
 #if GPS_CFG_STATEMENT_GPGSA
     } else if (gh->p.stat == STAT_GSA) {
@@ -393,10 +396,16 @@ copy_from_tmp_memory(gps_t* gh) {
         gh->dop_v = gh->p.data.gsa.dop_v;
         gh->fix_mode = gh->p.data.gsa.fix_mode;
         memcpy(gh->satellites_ids, gh->p.data.gsa.satellites_ids, sizeof(gh->satellites_ids));
+#if GPS_CFG_COUNT_PARSED
+        gh->parsed_GSA++;
+#endif /* GPS_CFG_COUNT_PARSED */
 #endif /* GPS_CFG_STATEMENT_GPGSA */
 #if GPS_CFG_STATEMENT_GPGSV
     } else if (gh->p.stat == STAT_GSV) {
         gh->sats_in_view = gh->p.data.gsv.sats_in_view;
+#if GPS_CFG_COUNT_PARSED
+        gh->parsed_GSV++;
+#endif /* GPS_CFG_COUNT_PARSED */
 #endif /* GPS_CFG_STATEMENT_GPGSV */
 #if GPS_CFG_STATEMENT_GPRMC
     } else if (gh->p.stat == STAT_RMC) {
@@ -407,6 +416,9 @@ copy_from_tmp_memory(gps_t* gh) {
         gh->date = gh->p.data.rmc.date;
         gh->month = gh->p.data.rmc.month;
         gh->year = gh->p.data.rmc.year;
+#if GPS_CFG_COUNT_PARSED
+        gh->parsed_RMC++;
+#endif /* GPS_CFG_COUNT_PARSED */
 #endif /* GPS_CFG_STATEMENT_GPRMC */
 #if GPS_CFG_STATEMENT_PUBX_TIME
     } else if (gh->p.stat == STAT_UBX_TIME) {
@@ -422,8 +434,14 @@ copy_from_tmp_memory(gps_t* gh) {
         gh->clk_bias = gh->p.data.time.clk_bias;
         gh->clk_drift = gh->p.data.time.clk_drift;
         gh->tp_gran = gh->p.data.time.tp_gran;
+#if GPS_CFG_COUNT_PARSED
+        gh->parsed_PUBX_TIME++;
+#endif /* GPS_CFG_COUNT_PARSED */
 #endif /* GPS_CFG_STATEMENT_PUBX_TIME */
     }
+#if GPS_CFG_COUNT_PARSED
+    gh->parsed++;
+#endif /* GPS_CFG_COUNT_PARSED */
     return 1;
 }
 
@@ -476,6 +494,7 @@ gps_process(gps_t* gh, const void* data, size_t len) {
     }
     return 1;
 }
+
 
 /**
  * \brief           Calculate distance and bearing between `2` latitude and longitude coordinates
